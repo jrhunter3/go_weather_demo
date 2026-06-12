@@ -17,7 +17,7 @@ go build ./...
 ## Usage
 
 ```bash
-# Fetch weather for one or more cities
+# Fetch current weather for one or more cities
 go run . "New York" "Los Angeles" "Chicago"
 
 # Use metric units
@@ -25,14 +25,29 @@ go run . -units metric "London"
 
 # Set a custom request timeout
 go run . -timeout 5s "Tokyo"
+
+# Output as JSON (pipe-friendly)
+go run . -json "New York" "Chicago"
+
+# Show an N-day forecast
+go run . -forecast 3 "Miami"
+
+# JSON forecast
+go run . -json -forecast 5 "Paris"
+
+# Generate shell completion script
+eval "$(go run . -completion bash)"
 ```
 
 ### Flags
 
-| Flag      | Default     | Description                |
-|-----------|-------------|----------------------------|
-| `-units`  | `imperial`  | `imperial` or `metric`     |
-| `-timeout`| `10s`       | Request timeout duration   |
+| Flag           | Default     | Description                            |
+|----------------|-------------|----------------------------------------|
+| `-units`       | `imperial`  | `imperial` or `metric`                 |
+| `-timeout`     | `10s`       | Request timeout duration               |
+| `-json`        | `false`     | Output as JSON instead of a table      |
+| `-forecast`    | `0`         | Show N-day forecast (disabled when 0)  |
+| `-completion`  | `""`        | Generate shell completion (`bash`/`zsh`)|
 
 ## Testing
 
@@ -51,7 +66,10 @@ go test ./... -v
 ├── output/
 │   ├── output.go        # Formatting & display
 │   └── output_test.go
+├── .github/workflows/
+│   └── go.yml           # CI: lint, vet, test on push/PR
 ├── go.mod
 ├── AGENTS.md
-└── PLAN.md
+├── PLAN.md
+└── README.md
 ```
